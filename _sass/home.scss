@@ -25,13 +25,12 @@
     // grid-template-columns: auto 1fr;
     column-gap: 2rem;
     // align-items: top;
-    align-items: center;
+    align-items: top;
     // background-color: #dff;
     margin: 1.7rem 0;
     padding: 1.5rem;
     border: 1px solid #bbb;
     border-radius: 10px;
-
 
     .post-content {
         font-size: 2rem;
@@ -39,6 +38,7 @@
     }
 
     .post-date {
+        padding-top: 4px;
         color: #bbb;
         font-size: 1rem;
         // background-color: #eee;
