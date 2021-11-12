@@ -45,6 +45,7 @@ guard result else {
 
 // TODO: check if the working copy is dirty before committing and pushing
 do {
+    let _ = try safeShell("git add .")
     let _ = try safeShell("git commit -am \"New Post: \(shortenedTitle)\"")
     let _ = try safeShell("git push")
 } catch {
