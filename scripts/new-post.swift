@@ -44,8 +44,12 @@ guard result else {
 } 
 
 // TODO: check if the working copy is dirty before committing and pushing
-safeShell("git commit -am \"New Post: \(shortenedTitle)\"")
-safeShell("git push")
+do {
+    let _ = try safeShell("git commit -am \"New Post: \(shortenedTitle)\"")
+    let _ = try safeShell("git push")
+} catch {
+    print("Error from SafeShell: \(error)")
+}
 
 func safeShell(_ command: String) throws -> String {
     let task = Process()
@@ -58,8 +62,7 @@ func safeShell(_ command: String) throws -> String {
 
     do {
         try task.run()
-    }
-    catch { 
+    } catch { 
         throw error 
     }
     
