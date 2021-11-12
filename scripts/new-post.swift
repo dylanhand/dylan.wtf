@@ -43,6 +43,10 @@ guard result else {
     exit(1)
 } 
 
+// TODO: check if the working copy is dirty before committing and pushing
+safeShell("git commit -am \"New Post: \(shortenedTitle)\"")
+safeShell("git push")
+
 func safeShell(_ command: String) throws -> String {
     let task = Process()
     let pipe = Pipe()
