@@ -5,10 +5,16 @@
 //  based on https://github.com/jessesquires/jessesquires.com/blob/master/scripts/new-post.swift
 import Foundation
 
+let homeDirectory = FileManager.default.homeDirectoryForCurrentUser.path 
+let repoPath = "\(homeDirectory)/Projects/dylan.wtf"
+FileManager.default.changeCurrentDirectoryPath(repoPath)
+
 print("\n=== New Dweet ===\n")
 print(">", terminator: " ")
 
 let dweet = (readLine() ?? "untitled").trimmingCharacters(in: .whitespacesAndNewlines)
+
+print("Sending...")
 
 let fullDateTime = ISO8601DateFormatter.string(
     from: Date(),
@@ -24,12 +30,6 @@ date: \(fullDateTime)
 \(dweet)
 """
 
-let homeDirectory = FileManager.default.homeDirectoryForCurrentUser.path //else {
-    // print("🚫  Couldn't get home directory")
-    // exit(1)
-// }
-let repoPath = "\(homeDirectory)/Projects/dylan.wtf"
-
 let postData = postTemplate.data(using: .utf8)
 
 let dateOnly = ISO8601DateFormatter.string(
@@ -39,9 +39,9 @@ let dateOnly = ISO8601DateFormatter.string(
 )
 
 let dashedTitle = dweet.localizedLowercase.replacingOccurrences(of: " ", with: "-")
-let shortenedTitle = String(dashedTitle.prefix(20))
+let shortenedTitle = String(dashedTitle.prefix(30))
 
-let filePath = "\(repoPath)/_posts/\(dateOnly)-\(shortenedTitle).md"
+let filePath = "./_posts/\(dateOnly)-\(shortenedTitle).md"
 
 let result = FileManager.default.createFile(atPath: filePath, contents: postData, attributes: nil)
 guard result else {
@@ -51,8 +51,8 @@ guard result else {
 
 // TODO: check if the working copy is dirty before committing and pushing
 do {
-    let _ = try safeShell("git add .")
-    let _ = try safeShell("git commit -am \"New Post: \(shortenedTitle)\"")
+    let _ = try safeShell("git add \(filePath)")
+    let _ = try safeShell("git commit -m \"New Post: \(shortenedTitle)\" \(filePath)")
     let _ = try safeShell("git push")
 } catch {
     print("Error from SafeShell: \(error)")
