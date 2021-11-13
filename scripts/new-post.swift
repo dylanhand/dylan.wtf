@@ -24,6 +24,12 @@ date: \(fullDateTime)
 \(dweet)
 """
 
+let homeDirectory = FileManager.default.homeDirectoryForCurrentUser.path //else {
+    // print("🚫  Couldn't get home directory")
+    // exit(1)
+// }
+let repoPath = "\(homeDirectory)/Projects/dylan.wtf"
+
 let postData = postTemplate.data(using: .utf8)
 
 let dateOnly = ISO8601DateFormatter.string(
@@ -35,7 +41,7 @@ let dateOnly = ISO8601DateFormatter.string(
 let dashedTitle = dweet.localizedLowercase.replacingOccurrences(of: " ", with: "-")
 let shortenedTitle = String(dashedTitle.prefix(20))
 
-let filePath = "./_posts/\(dateOnly)-\(shortenedTitle).md"
+let filePath = "\(repoPath)/_posts/\(dateOnly)-\(shortenedTitle).md"
 
 let result = FileManager.default.createFile(atPath: filePath, contents: postData, attributes: nil)
 guard result else {
