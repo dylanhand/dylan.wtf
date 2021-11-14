@@ -1,5 +1,7 @@
+@import "variables";
+
 html {
-    font-family: -apple-system, "Comic Sans MS";
+    font-family: $font-family;
     // background-color: rgb(255, 0, 221);
 }
 
