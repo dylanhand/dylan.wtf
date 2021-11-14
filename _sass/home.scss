@@ -31,12 +31,13 @@
     align-items: top;
     // background-color: #dff;
     margin: 1.7rem 0;
+    padding: 1.5rem;
     @media (max-width: $mobile) {
         margin: 20px 20px;
         grid-template-columns: initial;
         grid-template-rows: 1fr auto;
+        padding: 1rem;
     }
-    padding: 1.5rem;
     border: 1px solid #bbb;
     border-radius: 10px;
 
