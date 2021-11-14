@@ -6,14 +6,17 @@
     background-color: #eee;
 }
 
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
 .posts {
     display: grid;
-    justify-content: center;
     // background-color: #eff;
 }
 
 .posts-list {
-    width: 700px;
     // background-color: #eee;
     text-align: left;
 }
@@ -28,12 +31,18 @@
     align-items: top;
     // background-color: #dff;
     margin: 1.7rem 0;
+    @media (max-width: $mobile) {
+        margin: 20px 20px;
+    }
     padding: 1.5rem;
     border: 1px solid #bbb;
     border-radius: 10px;
 
     .post-content {
         font-size: 2rem;
+        @media (max-width: $mobile) {
+            font-size: 1.4rem;
+        }
         // background-color: #cfc;
     }
 
@@ -41,6 +50,9 @@
         padding-top: 4px;
         color: #bbb;
         font-size: 1rem;
+        @media (max-width: $mobile) {
+            font-size: 0.8rem;
+        }
         // background-color: #eee;
     }
 }

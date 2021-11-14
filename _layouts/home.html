@@ -2,18 +2,20 @@
 layout: default
 ---
 
-<div class="posts">
-    <div class="posts-list">
-    {% for post in site.posts %}
-        <div class="post-summary">
-            <span class=post-content>
-                {{ post.content }}
-            </span>
-            <span class="post-date">
-                {{ post.date | date: "%b %-d, %Y" }}
-            </span>
+<div class="container">
+    <div class="posts">
+        <div class="posts-list">
+        {% for post in site.posts %}
+            <div class="post-summary">
+                <span class=post-content>
+                    {{ post.content }}
+                </span>
+                <span class="post-date">
+                    {{ post.date | date: "%b %-d, %Y" }}
+                </span>
+            </div>
+            <!-- <div class="divider" /> -->
+        {% endfor %}
         </div>
-        <!-- <div class="divider" /> -->
-    {% endfor %}
     </div>
 </div>
