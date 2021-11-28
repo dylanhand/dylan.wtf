@@ -11,8 +11,10 @@ FileManager.default.changeCurrentDirectoryPath(repoPath)
 
 print("\n=== New Dweet ===\n")
 print(">", terminator: " ")
-
 let dweet = (readLine() ?? "untitled").trimmingCharacters(in: .whitespacesAndNewlines)
+
+print("Title:", terminator: " ")
+let title = (readLine() ?? "untitled").trimmingCharacters(in: .whitespacesAndNewlines)
 
 print("Sending...")
 
@@ -38,7 +40,7 @@ let dateOnly = ISO8601DateFormatter.string(
     formatOptions: [.withFullDate]
 )
 
-let dashedTitle = dweet.localizedLowercase.replacingOccurrences(of: " ", with: "-")
+let dashedTitle = title.localizedLowercase.replacingOccurrences(of: " ", with: "-")
 let shortenedTitle = String(dashedTitle.prefix(30))
 
 let filePath = "./_posts/\(dateOnly)-\(shortenedTitle).md"
