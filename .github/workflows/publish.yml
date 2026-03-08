@@ -60,8 +60,8 @@ jobs:
 
       - name: Commit and push
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "Dylan Hand"
+          git config user.email "dylan.hand@gmail.com"
           git add _posts/
           git commit -m "New Post: ${{ inputs.title }}"
           git push
