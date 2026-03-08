@@ -1,0 +1,67 @@
+name: Publish Post
+
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        description: 'Post title (used for filename slug)'
+        required: true
+        type: string
+      body:
+        description: 'Post body (markdown)'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Determine date and create post
+        env:
+          TITLE: ${{ inputs.title }}
+          BODY: ${{ inputs.body }}
+        run: |
+          python3 << 'PYEOF'
+          import os, datetime, re
+
+          title = os.environ['TITLE']
+          body = os.environ['BODY']
+
+          # Collect all existing post dates
+          post_dates = set()
+          for f in os.listdir('_posts'):
+              m = re.match(r'^(\d{4}-\d{2}-\d{2})', f)
+              if m:
+                  try:
+                      post_dates.add(datetime.date.fromisoformat(m.group(1)))
+                  except ValueError:
+                      pass
+
+          # Use today if free; otherwise find the next open date after the last buffered post
+          today = datetime.date.today()
+          if today not in post_dates:
+              post_date = today
+          else:
+              last = max(d for d in post_dates if d >= today)
+              post_date = last + datetime.timedelta(days=1)
+
+          slug = re.sub(r'[^a-z0-9]+', '-', title.lower()).strip('-')[:30].rstrip('-')
+          filename = f'_posts/{post_date}-{slug}.md'
+
+          with open(filename, 'w') as f:
+              f.write(f'---\nlayout: post\n---\n\n{body}\n')
+
+          print(f'Created: {filename}')
+          PYEOF
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _posts/
+          git commit -m "New Post: ${{ inputs.title }}"
+          git push

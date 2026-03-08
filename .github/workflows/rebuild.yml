@@ -1,0 +1,32 @@
+name: Daily Rebuild
+
+on:
+  schedule:
+    - cron: '0 5 * * *'  # 5:00 AM UTC
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for today's buffered post
+        id: check
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+          if ls _posts/${TODAY}-*.md > /dev/null 2>&1; then
+            echo "rebuild=true" >> "$GITHUB_OUTPUT"
+            echo "Post found for $TODAY — triggering rebuild."
+          else
+            echo "rebuild=false" >> "$GITHUB_OUTPUT"
+            echo "No post for $TODAY — skipping."
+          fi
+
+      - name: Trigger Pages rebuild
+        if: steps.check.outputs.rebuild == 'true'
+        run: gh api repos/${{ github.repository }}/pages/builds -X POST
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
